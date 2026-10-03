@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LUMI Bloom — Bản chơi thử</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f7d9ec,#e5ddfa 55%,#dcecff);font-family:system-ui,-apple-system,sans-serif;color:#493f55}
+#app{max-width:760px;margin:auto;padding:16px}.hero,.card,.guide{border-radius:24px;padding:16px;margin-bottom:12px}
+.hero{background:#ffffff8c}.card{background:#fff}.guide{background:#fff4c9;border:2px solid #efd77b;display:flex;gap:10px;align-items:center}.hand{font-size:30px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.brand{font-size:26px;font-weight:800}.small{font-size:13px;color:#82778d}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.stat{background:#ffffffb8;border-radius:16px;padding:10px}.stat b{display:block}
+.buttons{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.btn{border:0;border-radius:16px;padding:13px 9px;min-height:48px;font-weight:750;color:#493f55;background:#e5ddfa;cursor:pointer}.pink{background:#f7d9ec}.blue{background:#dcecff}.dark{background:#5e526a;color:#fff}.btn:disabled{opacity:.42}
+.item{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid #eee}.item:last-child{border:0}.pill{background:#f1e7f8;border-radius:10px;padding:5px 8px;font-size:12px}.ok{background:#e3f5e7}.warn{background:#fff0d8}
+.man{background:#f7f0fb;border-radius:17px;text-align:center;padding:10px}.mans{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.figure{font-size:46px}.bar{height:10px;background:#eee;border-radius:10px;overflow:hidden}.fill{height:100%;width:0;background:#c99bdc}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#5e526a;color:#fff;padding:11px 16px;border-radius:14px;display:none}
+@media(max-width:480px){#app{padding:10px}.brand{font-size:22px}.buttons{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body><main id="app">
+<section class="hero">
+<div class="row"><div><div class="brand">🌸 LUMI Bloom</div><div class="small">Beauty & Fashion · Thế giới LUMI</div></div><div>👩🏻 Luna<br><span class="pill">Cấp <span id="level">1</span></span></div></div>
+<div class="stats"><div class="stat">💰<b id="money">1.500</b><span class="small">Tiền LUMI</span></div><div class="stat">⭐<b id="points">0</b><span class="small">Điểm LUMI</span></div><div class="stat">📅<b id="day">1</b><span class="small">Ngày</span></div></div>
+</section>
+<section class="guide"><span class="hand">👆</span><div><b id="gt">Bước 1: Mở cửa hàng</b><div class="small" id="gd">Làm theo bàn tay để biết nơi cần bấm.</div></div></section>
+<section class="card"><b>🏪 Ca làm hôm nay</b><div class="small" id="status">Cửa hàng đang đóng.</div>
+<div class="buttons" style="margin-top:10px">
+<button class="btn pink" id="open">🚪 Mở cửa hàng</button><button class="btn blue" id="serve" disabled>🛍️ Phục vụ khách</button>
+<button class="btn" id="pack" disabled>📦 Đóng gói</button><button class="btn" id="online" disabled>🛒 Xử lý đơn online</button></div></section>
+<section class="card"><b>👗 Khu trưng bày</b><div class="mans">
+<div class="man"><div class="figure">👗</div><b>Nàng Thơ</b><div class="small">350 LUMI</div></div>
+<div class="man"><div class="figure">🧥</div><b>Basic</b><div class="small">280 LUMI</div></div>
+<div class="man"><div class="figure">👚</div><b>Pastel</b><div class="small">220 LUMI</div></div></div>
+<div class="small" style="margin-top:8px">3 manocanh • nhân viên phối lại mỗi 3 ngày.</div></section>
+<section class="card"><b>🛍️ Khách hàng</b>
+<div class="item"><span>Khách tại cửa hàng</span><b id="customers">0/3</b></div>
+<div class="item"><span>Đơn online</span><span id="order" class="pill warn">Đang chờ</span></div>
+<div class="item"><span>Đánh giá</span><span id="review" class="pill">Chưa có</span></div></section>
+<section class="card"><b>🎉 Sự kiện hôm nay</b><div style="background:#fff0f7;border-radius:18px;padding:12px;margin-top:8px">
+<b>🌸 Ngày Pastel LUMI</b><div class="small">Giảm giá toàn bộ sản phẩm.</div><div class="bar" style="margin-top:8px"><div id="fill" class="fill"></div></div>
+<div class="small" id="eventText">0/3 khách</div><button id="reward" class="btn pink" style="width:100%;margin-top:8px" disabled>🎁 Nhận thưởng</button></div></section>
+<section class="card"><b>📋 Nhiệm vụ hôm nay</b>
+<div class="item"><span>🚪 Mở cửa</span><span id="q1" class="pill">Chưa làm</span></div>
+<div class="item"><span>🛍️ Phục vụ 3 khách</span><span id="q2" class="pill">0/3</span></div>
+<div class="item"><span>📦 Đóng gói</span><span id="q3" class="pill">Chưa làm</span></div></section>
+<section class="card"><button id="close" class="btn dark" style="width:100%" disabled>🌙 Đóng cửa hàng & nhận thưởng</button></section>
+<div id="toast" class="toast"></div>
+</main>
+<script>
+(()=>{const $=id=>document.getElementById(id);let s={money:1500,points:0,day:1,level:1,open:false,c:0,pack:false,online:false,reward:false,review:false};
+try{const x=localStorage.getItem("lumiBloomSave");if(x)s={...s,...JSON.parse(x)}}catch(e){}
+const save=()=>{try{localStorage.setItem("lumiBloomSave",JSON.stringify(s))}catch(e){}};
+const toast=x=>{const t=$("toast");t.textContent=x;t.style.display="block";clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display="none",1800)};
+const guide=(a,b)=>{$("gt").textContent=a;$("gd").textContent=b};
+function render(){
+$("money").textContent=s.money.toLocaleString("vi-VN");$("points").textContent=s.points;$("day").textContent=s.day;$("level").textContent=s.level;
+$("status").textContent=s.open?"🟢 Cửa hàng đang mở — khách đang mua sắm.":"🔴 Cửa hàng đang đóng.";
+$("open").disabled=s.open;$("serve").disabled=!s.open||s.c>=3;$("pack").disabled=!s.open||s.c<3||s.pack;$("online").disabled=!s.open||s.c<3||!s.pack||s.online;
+$("close").disabled=!s.open||s.c<3||!s.pack||!s.online||!s.reward;
+$("customers").textContent=s.c+"/3";$("order").textContent=s.online?"Đã giao thành công":"Đang chờ";$("order").className="pill "+(s.online?"ok":"warn");
+$("review").textContent=s.review?"★★★★★":"Chưa có";$("review").className="pill "+(s.review?"ok":"");
+$("q1").textContent=s.open?"✓ Hoàn thành":"Chưa làm";$("q2").textContent=s.c+"/3";$("q3").textContent=s.pack?"✓ Hoàn thành":"Chưa làm";
+$("fill").style.width=(s.c/3*100)+"%";$("eventText").textContent=s.c+"/3 khách";
+$("reward").disabled=s.c<3||s.reward;
+}
+$("open").onclick=()=>{s.open=true;guide("Bước 2: Phục vụ khách","Hãy phục vụ 3 khách.");toast("🌸 Cửa hàng đã mở!");save();render()};
+$("serve").onclick=()=>{if(s.c<3){s.c++;s.money+=220;guide(s.c<3?"Bước 2: Tiếp tục phục vụ khách":"Bước 3: Đóng gói",s.c<3?"Còn "+(3-s.c)+" khách nữa.":"Đã đủ 3 khách, hãy đóng gói đơn.");toast("🛍️ Khách đã mua +220 LUMI");save();render()}};
+$("pack").onclick=()=>{s.pack=true;s.points+=10;guide("Bước 4: Xử lý đơn online","Hãy xử lý đơn online.");toast("📦 Đóng gói thành công +10 điểm");save();render()};
+$("online").onclick=()=>{s.online=true;s.review=true;s.money+=180;s.points+=5;guide("Bước 5: Nhận thưởng sự kiện","Đơn đã giao và khách để lại đánh giá.");toast("🛒 Đơn online giao thành công +180 LUMI");save();render()};
+$("reward").onclick=()=>{s.reward=true;s.money+=300;s.points+=30;guide("Bước 6: Kết thúc ngày","Đã nhận thưởng. Hãy đóng cửa hàng.");toast("🎁 +300 LUMI và +30 điểm");save();render()};
+$("close").onclick=()=>{s.open=false;s.day++;s.points+=20;s.c=0;s.pack=false;s.online=false;s.reward=false;s.review=false;if(s.day>=8)s.level=2;guide("Bước 1: Mở cửa hàng","Một ngày mới bắt đầu.");toast("🌙 Hoàn thành ngày +20 điểm");save();render()};
+render();
+})();
+</script></body></html>
